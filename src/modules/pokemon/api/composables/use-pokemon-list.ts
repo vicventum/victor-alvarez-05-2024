@@ -1,4 +1,4 @@
-import { watch } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { Get, GetAll, PokemonListQuery } from '@/modules/pokemon/types/PokemonProvider'
@@ -18,16 +18,31 @@ const usePokemonList = async () => {
 
   const provider: GetAll = axiosGetAll
 
-  const { data, isLoading, isError } = await useFetch<PokemonListResponse>(
-    () =>
-      getPokemonList(provider, {
-        page: currentPage.value
-      })
-    // {
-    //   watch: [currentPage, dataFilter],
-    //   lazy: true
-    // }
+  let resp: {
+    data: Ref<PokemonListResponse | undefined>
+    isLoading: Ref<boolean>
+    isError: Ref<boolean>
+  } = {
+    data: ref(undefined),
+    isLoading: ref(false),
+    isError: ref(false)
+  }
+
+  watch(
+    () => currentPage.value,
+    async () => {
+      console.log('🚀 ~ usePokemonList ~ currentPage.value:', currentPage.value)
+      resp = await useFetch<PokemonListResponse>(() =>
+        getPokemonList(provider, {
+          page: currentPage.value
+        })
+      )
+    },
+    { immediate: true }
   )
+
+  const { data, isLoading, isError } = await resp
+  console.log('🚀 ~ usePokemonList ~ data:', data.value)
 
   // ? Insertando la data (cuando ya se obtenga) en el store
   watch(

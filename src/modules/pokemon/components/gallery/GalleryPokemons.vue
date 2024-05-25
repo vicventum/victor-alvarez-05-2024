@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import type { PokemonList } from '@/modules/pokemon/types/PokemonList'
 import CardPokemon from '@/modules/pokemon/components/cards/CardPokemon.vue'
-import { usePokemonList } from '@/modules/pokemon/api/composables/use-pokemon-list'
 
-const { pokemonList } = await usePokemonList()
+type Props = {
+  pokemonList: PokemonList[]
+} 
+const props = defineProps<Props>()
 </script>
 
 <template>
