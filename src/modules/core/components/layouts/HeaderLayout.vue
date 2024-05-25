@@ -23,6 +23,7 @@ import BaseCard from '@/modules/core/components/base/BaseCard.vue'
 <style lang="scss" scoped>
 .header {
   &__inner {
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;

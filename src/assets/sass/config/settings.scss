@@ -19,8 +19,9 @@
   --on-primary: var(--light);
 
   --primary-lighten-1: hsl(1, 80%, 75%);
-  --dark-lighten-1: #19292d;
-  --light-darken-2: #d7dee7;
+  --dark-lighten-1: hsl(192, 29%, 14%);
+  --light-darken-1: hsl(213, 19%, 90%);
+  --light-darken-2: hsl(214, 25%, 87%);
   --light-darken-3: #9daec2;
   --light-darken-4: #6e8098;
 
@@ -28,5 +29,4 @@
 
   --max-width-container: 1000px;
   --border: 8px;
-  
 }

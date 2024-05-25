@@ -22,7 +22,10 @@ import BaseButton from '@/modules/core/components/base/BaseButton.vue'
 <style lang="scss" scoped>
 .bar {
   position: sticky;
-  top: 1rem;
+  top: .5rem;
+  z-index: 100;
+
+  box-shadow: 0 2px 4px 0px var(--light-darken-1);
 
   &__inner {
     display: flex;
