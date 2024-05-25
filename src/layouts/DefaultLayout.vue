@@ -1,18 +1,11 @@
 <script setup lang="ts">
+import HeaderLayout from '@/modules/core/components/layouts/HeaderLayout.vue'
 import { RouterLink } from 'vue-router'
-
 </script>
 
 <template>
   <div>
-    <header>
-			Header
-		
-			<nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-		</header>
+    <HeaderLayout />
     <slot />
   </div>
 </template>

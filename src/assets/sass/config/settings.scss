@@ -8,7 +8,7 @@
 
 :root {
   // Colors
-  --background: #f4f6f8;
+  --background: hsl(210, 22%, 96%);
   --surface: #fafafa;
   --primary: hsl(1, 80%, 66%);
   --dark: #121721;
@@ -24,5 +24,7 @@
   --light-darken-3: #9daec2;
   --light-darken-4: #6e8098;
 
-  --max-width: 1100px;
+  --max-width-container: 1100px;
+  --border: 8px;
+  
 }
