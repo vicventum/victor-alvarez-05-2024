@@ -1,0 +1,28 @@
+// Breakpoints
+// $breakpoints: (
+//   'phone': 420px,
+//   'tablet': 768px,
+//   'laptop': 1024px,
+//   'desktop': 1400px
+// );
+
+:root {
+  // Colors
+  --background: #f4f6f8;
+  --surface: #fafafa;
+  --primary: hsl(1, 80%, 66%);
+  --dark: #121721;
+  --light: #fafafa;
+
+  --on-background: var(--dark);
+  --on-surface: var(--dark);
+  --on-primary: var(--light);
+
+  --primary-lighten-1: hsl(1, 60%, 66%);
+  --dark-lighten-1: #19292d;
+  --light-darken-2: #d7dee7;
+  --light-darken-3: #9daec2;
+  --light-darken-4: #6e8098;
+
+  --max-width: 1100px;
+}
