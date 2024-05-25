@@ -7,7 +7,9 @@ import GalleryPokemons from '@/modules/pokemon/components/gallery/GalleryPokemon
 <template>
   <DefaultLayout class="home">
     <BarAction class="home__bar-action" />
-    <GalleryPokemons class="home__gallery" />
+    <Suspense>
+      <GalleryPokemons class="home__gallery" />
+    </Suspense>
   </DefaultLayout>
 </template>
 

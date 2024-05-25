@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import CardPokemon from '@/modules/pokemon/components/cards/CardPokemon.vue'
+import { usePokemonList } from '@/modules/pokemon/api/composables/use-pokemon-list'
+
+const { pokemonList } = await usePokemonList()
 </script>
 
 <template>
   <main class="gallery">
-    <CardPokemon v-for="n in 25" :key="n" />
+    <CardPokemon v-for="pokemon in pokemonList" :key="pokemon.id" />
   </main>
 </template>
 
