@@ -2,6 +2,7 @@ import type { PokemonListResult } from '@/modules/pokemon/types/PokemonList.resp
 
 interface PokemonList extends PokemonListResult {
   id: string
+  image: string
 }
 
 export type { PokemonList }

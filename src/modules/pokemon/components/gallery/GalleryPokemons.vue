@@ -4,13 +4,20 @@ import CardPokemon from '@/modules/pokemon/components/cards/CardPokemon.vue'
 
 type Props = {
   pokemonList: PokemonList[]
-} 
+}
 const props = defineProps<Props>()
 </script>
 
 <template>
   <main class="gallery">
-    <CardPokemon v-for="pokemon in pokemonList" :key="pokemon.id" />
+    <CardPokemon
+      v-for="pokemon in pokemonList"
+      :key="pokemon.id"
+      :id="pokemon.id"
+      :name="pokemon.name"
+      :image="pokemon.image"
+      :url="pokemon.url"
+    />
   </main>
 </template>
 
