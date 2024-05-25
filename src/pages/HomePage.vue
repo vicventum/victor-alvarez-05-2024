@@ -20,9 +20,9 @@ function nextPage(page: number) {
     <GalleryPokemons class="home__gallery" :pokemon-list="pokemonList" />
     <!-- </Suspense> -->
 
-    <footer class="actions pa-4 my-16">
+    <footer class="home__bottom">
       <BaseButton :disabled="isLoading || isFinalPage" @click="nextPage(currentPage + 1)">
-        Load More
+        {{ isLoading ? 'Loading...' : 'Load more' }}
       </BaseButton>
     </footer>
   </DefaultLayout>
@@ -32,6 +32,13 @@ function nextPage(page: number) {
 .home {
   &__bar-action {
     margin-bottom: 6.5rem;
+  }
+
+  &__bottom {
+    padding: 2rem;
+    margin: 2rem auto;
+
+    text-align: center;
   }
 }
 </style>

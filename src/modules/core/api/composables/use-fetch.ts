@@ -7,7 +7,7 @@ async function useFetch<T>(service: Function) {
 
   async function fetchData() {
     isLoading.value = true
-    
+
     try {
       const resp = await service()
       data.value = resp
@@ -20,7 +20,7 @@ async function useFetch<T>(service: Function) {
   }
   fetchData()
 
-  return { data, isLoading, isError }
+  return { data, isLoading, isError, refetch: fetchData }
 }
 
 export { useFetch }

@@ -13,7 +13,7 @@ import HeaderLayout from '@/modules/core/components/layouts/HeaderLayout.vue'
 .layout {
   max-width: var(--max-width-container);
   // margin-top: 1rem;
-  // margin-bottom: 1rem;
+  margin-bottom: 4rem;
 
   &__header {
     margin-bottom: 3rem;

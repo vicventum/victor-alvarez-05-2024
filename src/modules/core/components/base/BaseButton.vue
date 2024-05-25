@@ -1,14 +1,16 @@
 <script setup lang="ts">
 type Props = {
   background?: string
+  disabled?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
-  background: 'var(--primary)'
+  background: 'var(--primary)',
+  disabled: false
 })
 </script>
 
 <template>
-  <button class="btn">
+  <button class="btn" :disabled="disabled">
     <slot />
   </button>
 </template>
@@ -25,6 +27,10 @@ const props = withDefaults(defineProps<Props>(), {
   &:hover {
     // background-color: var(--primary-lighten-1);
     filter: brightness(1.3);
+  }
+  &:disabled {
+    filter: grayscale(1) contrast(0.9);
+    cursor: default;
   }
 }
 </style>
