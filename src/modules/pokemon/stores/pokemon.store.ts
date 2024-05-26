@@ -1,10 +1,12 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { PokemonList } from '../types/PokemonList'
+import type { PokemonList } from '@/modules/pokemon/types/PokemonList'
+import type { PokemonDetail } from '../types/PokemonDetail'
 
 export const usePokemonStore = defineStore('Pokemon', () => {
   const pokemonList = ref<PokemonList[]>([])
   const pokemonTeam = ref<string[]>([])
+  const pokemonTeamData = ref<PokemonDetail[]>([])
   // const pokemon = ref<pokemonDataDetail | null>(null)
   const currentPage = ref<number>(1)
   const isFinalPage = ref<boolean>(false)
@@ -13,6 +15,7 @@ export const usePokemonStore = defineStore('Pokemon', () => {
     // --- State
     pokemonList,
     pokemonTeam,
+    pokemonTeamData,
     // pokemon,
     currentPage,
     isFinalPage,
@@ -26,6 +29,9 @@ export const usePokemonStore = defineStore('Pokemon', () => {
     },
     setPokemonTeam(newPokemonTeam: string[]) {
       pokemonTeam.value = newPokemonTeam
+    },
+    setPokemonTeamData(newPokemonTeam: PokemonDetail[]) {
+      pokemonTeamData.value = newPokemonTeam
     },
     // setPokemon(newPokemon: PokemonDetail | null) {
     //   pokemon.value = newPokemon ? { ...newPokemon } : null

@@ -17,8 +17,9 @@ export const getAll: GetAll = async (queries: PokemonListQuery) => {
 
 export const get: Get = async (id: string) => {
   const BASE_URL = import.meta.env.VITE_API_POKEMON_URL
-  const resp: PokemonDetailResponse = await axiosClient(`${BASE_URL}/pokemon/${id}`)
-  return resp
+  const resp = await axiosClient(`${BASE_URL}/pokemon/${id}`)
+  const data: PokemonDetailResponse = resp.data
+  return data
 }
 
 export const add: Add = async (payload: { team: string[] }) => {

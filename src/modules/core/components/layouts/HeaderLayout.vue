@@ -14,7 +14,7 @@ import BaseCard from '@/modules/core/components/base/BaseCard.vue'
         <!-- <div class="header__divider" /> -->
 
         <RouterLink to="/" class="header__link">Home</RouterLink>
-        <RouterLink to="/about" class="header__link">About</RouterLink>
+        <RouterLink to="/team" class="header__link">Team</RouterLink>
       </nav>
     </BaseCard>
   </header>
