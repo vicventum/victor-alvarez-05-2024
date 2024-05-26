@@ -4,8 +4,9 @@ import { useGetPokemonTeamData } from '../modules/pokemon/api/composables/use-ge
 import { useGetPokemonTeam } from '@/modules/pokemon/api/composables/use-get-pokemon-team'
 import CardTeam from '@/modules/pokemon/components/cards-team/CardTeam.vue'
 
-const { pokemonTeam } = await useGetPokemonTeam()
-const { pokemonTeamData, refetch } = await useGetPokemonTeamData(pokemonTeam.value)
+await useGetPokemonTeam()
+const { pokemonTeamData } = await useGetPokemonTeamData()
+
 </script>
 
 <template>

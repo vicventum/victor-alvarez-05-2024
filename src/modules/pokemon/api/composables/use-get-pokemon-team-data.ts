@@ -11,16 +11,25 @@ import type { PokemonDetailResponse } from '../../types/PokemonDetail.response'
 import type { PokemonDetail } from '../../types/PokemonDetail'
 import { utilFormatPokemonDetail } from '../../utils/util-format-pokemon-detail'
 
-const useGetPokemonTeamData = async (pokemonTeam: string[]) => {
+// const useGetPokemonTeamData = async (pokemonTeam: string[]) => {
+const useGetPokemonTeamData = async () => {
   const store = usePokemonStore()
-  const { pokemonTeamData } = storeToRefs(store)
+  const { pokemonTeamData, pokemonTeam } = storeToRefs(store)
 
   const provider: Get = axiosGet
 
   const { data, isLoading, isError, refetch } = await useFetch<PokemonDetailResponse[]>(() => {
-    const promises = pokemonTeam.map((id) => getPokemonDetail(provider, { id }))
+    const promises = pokemonTeam.value.map((id) => getPokemonDetail(provider, { id }))
     return Promise.all(promises)
   })
+
+  watch(
+    pokemonTeam,
+    async () => {
+      await refetch()
+    },
+    { immediate: false }
+  )
 
   // ? Insertando la data (cuando ya se obtenga) en el store
   watch(
