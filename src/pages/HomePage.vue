@@ -5,6 +5,7 @@ import BaseButton from '@/modules/core/components/base/BaseButton.vue'
 import BarAction from '@/modules/pokemon/components/bar/BarAction.vue'
 import GalleryPokemons from '@/modules/pokemon/components/gallery/GalleryPokemons.vue'
 
+import { MAX_POKEMONS, MAX_TEAM } from '@/modules/core/constants'
 import { usePokemonList } from '@/modules/pokemon/api/composables/use-pokemon-list'
 import { useAddPokemons } from '@/modules/pokemon/api/composables/use-add-pokemons'
 import { useGetPokemonTeam } from '@/modules/pokemon/api/composables/use-get-pokemon-team'
@@ -18,7 +19,6 @@ function nextPage(page: number) {
 
 const selectedTeam = ref<string[]>(pokemonTeam.value)
 function addPokemons(selectedPokemons: string[]) {
-  console.log('🚀 ~ addPokemons ~ selectedPokemons:', selectedPokemons)
   selectedTeam.value = selectedPokemons
 }
 
@@ -29,9 +29,8 @@ async function submitTeam() {
   setTimeout(() => refetch(), 700)
 }
 
-const MAX_POKEMONS = 151
 const isGreaterThanMax = ref(false)
-const isButtonDisabled = ref(false)
+const isButtonBarDisabled = ref(false)
 
 watch(
   () => pokemonList.value,
@@ -43,9 +42,8 @@ watch(
 watch(
   () => selectedTeam.value,
   (selectedTeam) => {
-    console.log('🚀 ~ selectedTeam:', selectedTeam.length)
-    if (!selectedTeam.length) isButtonDisabled.value = true
-    else isButtonDisabled.value = false
+    if (!selectedTeam.length) isButtonBarDisabled.value = true
+    else isButtonBarDisabled.value = false
   },
   { immediate: true, deep: true }
 )
@@ -56,7 +54,8 @@ watch(
     <BarAction
       class="home__bar-action"
       :total-team="totalPokemonTeam"
-      :is-button-disabled="isButtonDisabled"
+      :max-team="MAX_TEAM"
+      :is-button-disabled="isButtonBarDisabled"
       @add-team="submitTeam"
     />
 
@@ -65,6 +64,7 @@ watch(
       :pokemon-list="pokemonList"
       :pokemon-team="pokemonTeam"
       :max-pokemons="MAX_POKEMONS"
+      :max-team="MAX_TEAM"
       @change-select-pokemons="addPokemons"
     />
 

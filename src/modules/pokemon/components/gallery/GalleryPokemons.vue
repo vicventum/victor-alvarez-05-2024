@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { PokemonList } from '@/modules/pokemon/types/PokemonList'
 import CardPokemon from '@/modules/pokemon/components/cards/CardPokemon.vue'
 
@@ -7,12 +7,14 @@ type Props = {
   pokemonTeam: string[]
   pokemonList: PokemonList[]
   maxPokemons?: number
+  maxTeam?: number
 }
 type Emits = {
   'change-select-pokemons': [selectedPokemons: string[]]
 }
 const props = withDefaults(defineProps<Props>(), {
-  maxPokemons: Infinity
+  maxPokemons: Infinity,
+  maxTeam: Infinity
 })
 const emit = defineEmits<Emits>()
 const selectedPokemons = ref(new Set<string>([]))
@@ -22,6 +24,10 @@ function addPokemon(id: string) {
   if (!isPokemonAdded) selectedPokemons.value.add(id)
   else selectedPokemons.value.delete(id)
 }
+
+const isCardBlocked = computed(
+  () => props.pokemonTeam.length + selectedPokemons.value.size >= props.maxTeam
+)
 
 watch(
   () => selectedPokemons.value.size,
@@ -35,7 +41,7 @@ watch(
   () => {
     selectedPokemons.value = new Set<string>([])
   },
-  {deep: true}
+  { deep: true }
 )
 </script>
 
@@ -49,6 +55,7 @@ watch(
         :image="pokemon.image"
         :url="pokemon.url"
         :is-added="pokemonTeam.includes(pokemon.id)"
+        :is-blocked="isCardBlocked"
         @select-pokemon="addPokemon"
       />
     </template>

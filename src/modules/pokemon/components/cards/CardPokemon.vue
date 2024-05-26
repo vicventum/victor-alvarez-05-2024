@@ -8,6 +8,7 @@ type Props = {
   name: string
   image: string
   isAdded?: boolean
+  isBlocked?: boolean
 }
 type Emits = {
   'select-pokemon': [id: string]
@@ -23,10 +24,12 @@ function selectPokemon(id: string) {
   emit('select-pokemon', id)
 }
 
-const cardBorderColor = computed(() => {
-  if (props.isAdded) return { 'pokemon--bordered-added': true }
-  if (isSelected.value) return { 'pokemon--bordered-selected': true }
-  return {}
+const cardComputedClasses = computed(() => {
+  return {
+    'pokemon--blocked': props.isBlocked,
+    'pokemon--bordered-added': props.isAdded,
+    'pokemon--bordered-selected': isSelected.value
+  }
 })
 const buttonText = computed(() => {
   if (props.isAdded) return 'Added'
@@ -35,7 +38,7 @@ const buttonText = computed(() => {
 </script>
 
 <template>
-  <BaseCard class="pokemon" :class="cardBorderColor">
+  <BaseCard class="pokemon" :class="cardComputedClasses">
     <img class="pokemon__img" :src="image" :alt="`Pokemon ${name} image`" />
 
     <div class="pokemon__content">
@@ -47,7 +50,7 @@ const buttonText = computed(() => {
       <div class="pokemon__actions">
         <BaseButton
           :background="isSelected || isAdded ? 'var(--light-text)' : 'var(--primary)'"
-          :disabled="isAdded"
+          :disabled="isAdded || (isBlocked && !isSelected)"
           @click="selectPokemon(id)"
         >
           {{ buttonText }}
@@ -60,14 +63,16 @@ const buttonText = computed(() => {
 <style lang="scss" scoped>
 .pokemon {
   position: relative;
-  cursor: pointer;
+  // cursor: pointer;
 
   transition-property: box-shadow, filter;
   transition-duration: 0.1s;
   transition-timing-function: ease-out;
 
   // height: 10rem;
-
+  &--blocked {
+    filter: brightness(0.9);
+  }
   &--bordered-selected {
     filter: drop-shadow(0px 0px 1px var(--primary));
   }
@@ -75,7 +80,7 @@ const buttonText = computed(() => {
     filter: drop-shadow(0px 0px 1px var(--light-text));
   }
 
-  &:hover:not(.pokemon--bordered-added) {
+  &:hover:not(.pokemon--bordered-added, .pokemon--blocked) {
     @extend .pokemon--bordered-selected;
     // transform: scale(1.01);
   }
