@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import BaseButton from '@/modules/core/components/base/BaseButton.vue'
 import BarAction from '@/modules/pokemon/components/bar/BarAction.vue'
@@ -26,21 +26,35 @@ async function submitTeam() {
   // FIXME: Refactorizar luego
   setTimeout(() => refetch(), 500)
 }
+
+const MAX_POKEMONS = 151
+const isGreaterThanMax = ref(false)
+
+watch(
+  () => pokemonList.value,
+  (pokemonList) => {
+    if (pokemonList.length > MAX_POKEMONS) isGreaterThanMax.value = true
+  },
+  { deep: true }
+)
 </script>
 
 <template>
   <DefaultLayout class="home">
     <BarAction class="home__bar-action" :total-team="totalPokemonTeam" @add-team="submitTeam" />
-    <!-- <Suspense> -->
+
     <GalleryPokemons
       class="home__gallery"
       :pokemon-list="pokemonList"
+      :max-pokemons="MAX_POKEMONS"
       @change-select-pokemons="addPokemons"
     />
-    <!-- </Suspense> -->
 
     <footer class="home__bottom">
-      <BaseButton :disabled="isLoading || isFinalPage" @click="nextPage(currentPage + 1)">
+      <BaseButton
+        :disabled="isLoading || isFinalPage || isGreaterThanMax"
+        @click="nextPage(currentPage + 1)"
+      >
         {{ isLoading ? 'Loading...' : 'Load more' }}
       </BaseButton>
     </footer>

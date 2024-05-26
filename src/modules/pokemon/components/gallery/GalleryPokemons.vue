@@ -2,27 +2,25 @@
 import { ref, watch } from 'vue'
 import type { PokemonList } from '@/modules/pokemon/types/PokemonList'
 import CardPokemon from '@/modules/pokemon/components/cards/CardPokemon.vue'
-import { utilIsDifferentArray } from '@/modules/core/utils/util-is-different-array'
 
 type Props = {
   pokemonList: PokemonList[]
+  maxPokemons?: number
 }
 type Emits = {
   'change-select-pokemons': [selectedPokemons: string[]]
 }
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  maxPokemons: Infinity
+})
 const emit = defineEmits<Emits>()
 
-// const selectedPokemons = []
 const selectedPokemons = ref(new Set<string>([]))
 
 function addPokemon(id: string) {
   const isPokemonAdded = selectedPokemons.value.has(id)
-  if (isPokemonAdded) {
-    selectedPokemons.value.delete(id)
-  } else {
-    selectedPokemons.value.add(id)
-  }
+  if (isPokemonAdded) selectedPokemons.value.delete(id)
+  else selectedPokemons.value.add(id)
 }
 
 watch(
@@ -36,15 +34,16 @@ watch(
 
 <template>
   <main class="gallery">
-    <CardPokemon
-      v-for="pokemon in pokemonList"
-      :key="pokemon.id"
-      :id="pokemon.id"
-      :name="pokemon.name"
-      :image="pokemon.image"
-      :url="pokemon.url"
-      @select-pokemon="addPokemon"
-    />
+    <template v-for="pokemon in pokemonList" :key="pokemon.id">
+      <CardPokemon
+        v-if="Number(pokemon.id) <= maxPokemons"
+        :id="pokemon.id"
+        :name="pokemon.name"
+        :image="pokemon.image"
+        :url="pokemon.url"
+        @select-pokemon="addPokemon"
+      />
+    </template>
   </main>
 </template>
 
