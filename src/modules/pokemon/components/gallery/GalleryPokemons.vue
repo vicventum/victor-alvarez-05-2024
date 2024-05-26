@@ -4,6 +4,7 @@ import type { PokemonList } from '@/modules/pokemon/types/PokemonList'
 import CardPokemon from '@/modules/pokemon/components/cards/CardPokemon.vue'
 
 type Props = {
+  pokemonTeam: string[]
   pokemonList: PokemonList[]
   maxPokemons?: number
 }
@@ -14,13 +15,12 @@ const props = withDefaults(defineProps<Props>(), {
   maxPokemons: Infinity
 })
 const emit = defineEmits<Emits>()
-
 const selectedPokemons = ref(new Set<string>([]))
 
 function addPokemon(id: string) {
   const isPokemonAdded = selectedPokemons.value.has(id)
-  if (isPokemonAdded) selectedPokemons.value.delete(id)
-  else selectedPokemons.value.add(id)
+  if (!isPokemonAdded) selectedPokemons.value.add(id)
+  else selectedPokemons.value.delete(id)
 }
 
 watch(
@@ -29,6 +29,13 @@ watch(
     const arrSelectedPokemons = [...selectedPokemons.value]
     emit('change-select-pokemons', arrSelectedPokemons)
   }
+)
+watch(
+  () => props.pokemonTeam,
+  () => {
+    selectedPokemons.value = new Set<string>([])
+  },
+  {deep: true}
 )
 </script>
 
@@ -41,6 +48,7 @@ watch(
         :name="pokemon.name"
         :image="pokemon.image"
         :url="pokemon.url"
+        :is-added="pokemonTeam.includes(pokemon.id)"
         @select-pokemon="addPokemon"
       />
     </template>

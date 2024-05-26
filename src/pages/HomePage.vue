@@ -10,25 +10,28 @@ import { useAddPokemons } from '@/modules/pokemon/api/composables/use-add-pokemo
 import { useGetPokemonTeam } from '@/modules/pokemon/api/composables/use-get-pokemon-team'
 
 const { pokemonList, isLoading, isFinalPage, currentPage, getPage } = await usePokemonList()
-const { totalPokemonTeam, refetch } = await useGetPokemonTeam()
+const { pokemonTeam, totalPokemonTeam, refetch } = await useGetPokemonTeam()
 
 function nextPage(page: number) {
   getPage(page)
 }
 
-const pokemonTeam = ref<string[]>([])
+const selectedTeam = ref<string[]>(pokemonTeam.value)
 function addPokemons(selectedPokemons: string[]) {
-  pokemonTeam.value = selectedPokemons
+  console.log('🚀 ~ addPokemons ~ selectedPokemons:', selectedPokemons)
+  selectedTeam.value = selectedPokemons
 }
 
 async function submitTeam() {
-  await useAddPokemons([...pokemonTeam.value])
+  const arr = [...new Set([...selectedTeam.value, ...pokemonTeam.value])]
+  await useAddPokemons(arr)
   // FIXME: Refactorizar luego
-  setTimeout(() => refetch(), 500)
+  setTimeout(() => refetch(), 700)
 }
 
 const MAX_POKEMONS = 151
 const isGreaterThanMax = ref(false)
+const isButtonDisabled = ref(false)
 
 watch(
   () => pokemonList.value,
@@ -37,15 +40,30 @@ watch(
   },
   { deep: true }
 )
+watch(
+  () => selectedTeam.value,
+  (selectedTeam) => {
+    console.log('🚀 ~ selectedTeam:', selectedTeam.length)
+    if (!selectedTeam.length) isButtonDisabled.value = true
+    else isButtonDisabled.value = false
+  },
+  { immediate: true, deep: true }
+)
 </script>
 
 <template>
   <DefaultLayout class="home">
-    <BarAction class="home__bar-action" :total-team="totalPokemonTeam" @add-team="submitTeam" />
+    <BarAction
+      class="home__bar-action"
+      :total-team="totalPokemonTeam"
+      :is-button-disabled="isButtonDisabled"
+      @add-team="submitTeam"
+    />
 
     <GalleryPokemons
       class="home__gallery"
       :pokemon-list="pokemonList"
+      :pokemon-team="pokemonTeam"
       :max-pokemons="MAX_POKEMONS"
       @change-select-pokemons="addPokemons"
     />

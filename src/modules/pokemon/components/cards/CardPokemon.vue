@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import BaseButton from '@/modules/core/components/base/BaseButton.vue'
 import BaseCard from '@/modules/core/components/base/BaseCard.vue'
 
@@ -7,13 +7,13 @@ type Props = {
   id: string
   name: string
   image: string
-  // isBordered?: boolean
+  isAdded?: boolean
 }
 type Emits = {
   'select-pokemon': [id: string]
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 const isSelected = ref(false)
@@ -22,10 +22,20 @@ function selectPokemon(id: string) {
   isSelected.value = !isSelected.value
   emit('select-pokemon', id)
 }
+
+const cardBorderColor = computed(() => {
+  if (props.isAdded) return { 'pokemon--bordered-added': true }
+  if (isSelected.value) return { 'pokemon--bordered-selected': true }
+  return {}
+})
+const buttonText = computed(() => {
+  if (props.isAdded) return 'Added'
+  return isSelected.value ? 'Remove' : 'Add'
+})
 </script>
 
 <template>
-  <BaseCard class="pokemon" :class="{ 'pokemon--bordered': isSelected }">
+  <BaseCard class="pokemon" :class="cardBorderColor">
     <img class="pokemon__img" :src="image" :alt="`Pokemon ${name} image`" />
 
     <div class="pokemon__content">
@@ -36,10 +46,11 @@ function selectPokemon(id: string) {
 
       <div class="pokemon__actions">
         <BaseButton
-          :background="!isSelected ? 'var(--primary)' : 'var(--light-text)'"
+          :background="isSelected || isAdded ? 'var(--light-text)' : 'var(--primary)'"
+          :disabled="isAdded"
           @click="selectPokemon(id)"
         >
-          {{ !isSelected ? 'Add' : 'Remove' }}
+          {{ buttonText }}
         </BaseButton>
       </div>
     </div>
@@ -57,12 +68,15 @@ function selectPokemon(id: string) {
 
   // height: 10rem;
 
-  &--bordered {
+  &--bordered-selected {
     filter: drop-shadow(0px 0px 1px var(--primary));
   }
+  &--bordered-added {
+    filter: drop-shadow(0px 0px 1px var(--light-text));
+  }
 
-  &:hover {
-    @extend .pokemon--bordered;
+  &:hover:not(.pokemon--bordered-added) {
+    @extend .pokemon--bordered-selected;
     // transform: scale(1.01);
   }
 
