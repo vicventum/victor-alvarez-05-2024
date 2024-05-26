@@ -5,7 +5,7 @@ interface PokemonDetail {
   image?: string
 	types: string[]
 	stats: object[]
-	cries: object
+	cries: { latest: string; legacy: string }
 	height: number
 	weight: number
 	// description: string

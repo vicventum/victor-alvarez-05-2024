@@ -5,7 +5,6 @@ import type { PokemonDetail } from '../types/PokemonDetail'
 export function utilFormatPokemonDetail(
   pokemonDetailResponse: PokemonDetailResponse
 ): PokemonDetail {
-  console.log('🚀 ~ utilFormatPokemonDetail ~ pokemonDetailResponse:', pokemonDetailResponse)
 
   const formattedPokemonDetail: PokemonDetail = {
     id: pokemonDetailResponse.id.toString(),
