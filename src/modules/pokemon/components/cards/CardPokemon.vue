@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import BaseButton from '@/modules/core/components/base/BaseButton.vue'
 import BaseCard from '@/modules/core/components/base/BaseCard.vue'
 
@@ -6,13 +7,25 @@ type Props = {
   id: string
   name: string
   image: string
+  // isBordered?: boolean
+}
+type Emits = {
+  'select-pokemon': [id: string]
 }
 
 defineProps<Props>()
+const emit = defineEmits<Emits>()
+
+const isSelected = ref(false)
+
+function selectPokemon(id: string) {
+  isSelected.value = !isSelected.value
+  emit('select-pokemon', id)
+}
 </script>
 
 <template>
-  <BaseCard class="pokemon">
+  <BaseCard class="pokemon" :class="{ 'pokemon--bordered': isSelected }">
     <img class="pokemon__img" :src="image" :alt="`Pokemon ${name} image`" />
 
     <div class="pokemon__content">
@@ -22,7 +35,12 @@ defineProps<Props>()
       </div>
 
       <div class="pokemon__actions">
-        <BaseButton>Add</BaseButton>
+        <BaseButton
+          :background="!isSelected ? 'var(--primary)' : 'var(--light-text)'"
+          @click="selectPokemon(id)"
+        >
+          {{ !isSelected ? 'Add' : 'Remove' }}
+        </BaseButton>
       </div>
     </div>
   </BaseCard>
@@ -39,8 +57,12 @@ defineProps<Props>()
 
   // height: 10rem;
 
-  &:hover {
+  &--bordered {
     filter: drop-shadow(0px 0px 1px var(--primary));
+  }
+
+  &:hover {
+    @extend .pokemon--bordered;
     // transform: scale(1.01);
   }
 

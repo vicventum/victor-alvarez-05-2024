@@ -11,13 +11,21 @@ const { pokemonList, isLoading, isFinalPage, currentPage, getPage } = await useP
 function nextPage(page: number) {
   getPage(page)
 }
+
+function addPokemons(selectedPokemons: string[]) {
+  console.log('🟢 ~ addPokemons ~ selectedPokemons:', selectedPokemons)
+}
 </script>
 
 <template>
   <DefaultLayout class="home">
     <BarAction class="home__bar-action" />
     <!-- <Suspense> -->
-    <GalleryPokemons class="home__gallery" :pokemon-list="pokemonList" />
+    <GalleryPokemons
+      class="home__gallery"
+      :pokemon-list="pokemonList"
+      @change-select-pokemons="addPokemons"
+    />
     <!-- </Suspense> -->
 
     <footer class="home__bottom">
