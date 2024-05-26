@@ -2,9 +2,10 @@ import type { PokemonListResponse } from '@/modules/pokemon/types/PokemonList.re
 import type { PokemonDetailResponse } from '@/modules/pokemon/types/PokemonDetail.response'
 import type { Get, GetAll, PokemonListQuery } from '@/modules/pokemon/types/PokemonProvider'
 import type {
-  AddPokemonList,
+  AddPokemonTeam,
   GetPokemonDetail,
-  GetPokemonList
+  GetPokemonList,
+  GetPokemonTeam
 } from '@/modules/pokemon/types/PokemonService'
 
 const getPokemonList: GetPokemonList = async (provider, options) => {
@@ -27,10 +28,19 @@ const getPokemonDetail: GetPokemonDetail = async (provider, { id }) => {
   return pokemonDetailResponse
 }
 
-const addPokemonTeam: AddPokemonList = async (provider, payload) => {
+const addPokemonTeam: AddPokemonTeam = async (provider, payload) => {
   const addPokemonTeamResponse = await provider(payload)
 
   return addPokemonTeamResponse
 }
 
-export { getPokemonList, getPokemonDetail, addPokemonTeam }
+const getPokemonTeam: GetPokemonTeam = async (provider) => {
+  const pokemonTeamResponse = await provider()
+
+  // TODO: Validaciones con Zod...
+  // ...
+
+  return pokemonTeamResponse
+}
+
+export { getPokemonList, getPokemonDetail, addPokemonTeam, getPokemonTeam }

@@ -1,6 +1,6 @@
 import type { PokemonListResponse } from '@/modules/pokemon/types/PokemonList.response'
 import type { PokemonDetailResponse } from '@/modules/pokemon/types/PokemonDetail.response'
-import type { Get, GetAll, Add, PokemonListQuery } from '@/modules/pokemon/types/PokemonProvider'
+import type { Get, GetAll, Add, PokemonListQuery, GetTeam, PokemonTeam } from '@/modules/pokemon/types/PokemonProvider'
 import { axiosClient } from '@/modules/pokemon/api/clients/axios-api'
 
 export const getAll: GetAll = async (queries: PokemonListQuery) => {
@@ -21,8 +21,17 @@ export const get: Get = async (id: string) => {
   return resp
 }
 
-export const add: Add = async (payload: { pokemonTeam: string[] }) => {
+export const add: Add = async (payload: { team: string[] }) => {
   const BASE_URL = import.meta.env.VITE_API_DB_URL
 
   await axiosClient.put(`${BASE_URL}/pokemon/1`, payload)
+}
+
+export const getTeam: GetTeam = async () => {
+  const BASE_URL = import.meta.env.VITE_API_DB_URL
+
+  const resp = await axiosClient.get(`${BASE_URL}/pokemon/1`)
+  const data: PokemonTeam = await resp.data
+
+  return data
 }

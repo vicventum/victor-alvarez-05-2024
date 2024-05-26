@@ -7,8 +7,10 @@ import GalleryPokemons from '@/modules/pokemon/components/gallery/GalleryPokemon
 
 import { usePokemonList } from '@/modules/pokemon/api/composables/use-pokemon-list'
 import { useAddPokemons } from '@/modules/pokemon/api/composables/use-add-pokemons'
+import { useGetPokemonTeam } from '@/modules/pokemon/api/composables/use-get-pokemon-team'
 
 const { pokemonList, isLoading, isFinalPage, currentPage, getPage } = await usePokemonList()
+const { totalPokemonTeam, refetch } = await useGetPokemonTeam()
 
 function nextPage(page: number) {
   getPage(page)
@@ -16,19 +18,19 @@ function nextPage(page: number) {
 
 const pokemonTeam = ref<string[]>([])
 function addPokemons(selectedPokemons: string[]) {
-  console.log('🚀 ~ addPokemons ~ selectedPokemons:', selectedPokemons)
   pokemonTeam.value = selectedPokemons
-  console.log('🚀🚀 ~ addPokemons ~ pokemonTeam.value:', [...pokemonTeam.value])
 }
+
 async function submitTeam() {
-  console.log('🚀🚀🚀 ~ submitTeam ~ pokemonTeam.value:', pokemonTeam.value)
   await useAddPokemons([...pokemonTeam.value])
+  // FIXME: Refactorizar luego
+  setTimeout(() => refetch(), 500)
 }
 </script>
 
 <template>
   <DefaultLayout class="home">
-    <BarAction class="home__bar-action" @add-team="submitTeam" />
+    <BarAction class="home__bar-action" :total-team="totalPokemonTeam" @add-team="submitTeam" />
     <!-- <Suspense> -->
     <GalleryPokemons
       class="home__gallery"

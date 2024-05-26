@@ -4,11 +4,17 @@ import type { PokemonDetailResponse } from '@/modules/pokemon/types/PokemonDetai
 type PokemonListQuery = {
   page: number
 }
+type PokemonTeam = {
+  id: string
+  team: string[]
+}
 
 type GetAll = (queries: PokemonListQuery) => Promise<PokemonListResponse>
 
 type Get = (id: string) => Promise<PokemonDetailResponse>
 
-type Add = (payload: { pokemonTeam: string[] }) => Promise<void>
+type Add = (payload: { team: string[] }) => Promise<void>
 
-export type { PokemonListQuery, GetAll, Get, Add }
+type GetTeam = () => Promise<PokemonTeam>
+
+export type { GetAll, Get, Add, GetTeam, PokemonListQuery, PokemonTeam }
