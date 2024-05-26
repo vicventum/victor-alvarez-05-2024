@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import BaseCard from '@/modules/core/components/base/BaseCard.vue'
 import BaseButton from '@/modules/core/components/base/BaseButton.vue'
+
+type Emits = {
+  'add-team': []
+}
+const emit = defineEmits<Emits>()
+
+function addTeam() {
+  emit('add-team')
+}
 </script>
 
 <template>
@@ -13,7 +22,7 @@ import BaseButton from '@/modules/core/components/base/BaseButton.vue'
       </div>
 
       <div class="bar__actions">
-        <BaseButton class="bar__add-btn">Add to my team</BaseButton>
+        <BaseButton class="bar__add-btn" @click="addTeam">Add to my team</BaseButton>
       </div>
     </BaseCard>
   </section>

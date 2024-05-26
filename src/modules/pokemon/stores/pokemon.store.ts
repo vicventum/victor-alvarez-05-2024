@@ -4,6 +4,7 @@ import type { PokemonList } from '../types/PokemonList'
 
 export const usePokemonStore = defineStore('Pokemon', () => {
   const pokemonList = ref<PokemonList[]>([])
+  const pokemonTeam = ref<string[]>([])
   // const pokemon = ref<pokemonDataDetail | null>(null)
   const currentPage = ref<number>(1)
   const isFinalPage = ref<boolean>(false)
@@ -11,6 +12,7 @@ export const usePokemonStore = defineStore('Pokemon', () => {
   return {
     // --- State
     pokemonList,
+    pokemonTeam,
     // pokemon,
     currentPage,
     isFinalPage,
@@ -21,6 +23,9 @@ export const usePokemonStore = defineStore('Pokemon', () => {
     // --- Actions
     setPokemonList(newPokemons: PokemonList[]) {
       pokemonList.value.push(...newPokemons)
+    },
+    setPokemonTeam(newPokemonTeam: string[]) {
+      pokemonTeam.value = newPokemonTeam
     },
     // setPokemon(newPokemon: PokemonDetail | null) {
     //   pokemon.value = newPokemon ? { ...newPokemon } : null

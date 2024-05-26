@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import BaseButton from '@/modules/core/components/base/BaseButton.vue'
 import BarAction from '@/modules/pokemon/components/bar/BarAction.vue'
 import GalleryPokemons from '@/modules/pokemon/components/gallery/GalleryPokemons.vue'
 
 import { usePokemonList } from '@/modules/pokemon/api/composables/use-pokemon-list'
+import { useAddPokemons } from '@/modules/pokemon/api/composables/use-add-pokemons'
 
 const { pokemonList, isLoading, isFinalPage, currentPage, getPage } = await usePokemonList()
 
@@ -12,14 +14,21 @@ function nextPage(page: number) {
   getPage(page)
 }
 
+const pokemonTeam = ref<string[]>([])
 function addPokemons(selectedPokemons: string[]) {
-  console.log('🟢 ~ addPokemons ~ selectedPokemons:', selectedPokemons)
+  console.log('🚀 ~ addPokemons ~ selectedPokemons:', selectedPokemons)
+  pokemonTeam.value = selectedPokemons
+  console.log('🚀🚀 ~ addPokemons ~ pokemonTeam.value:', [...pokemonTeam.value])
+}
+async function submitTeam() {
+  console.log('🚀🚀🚀 ~ submitTeam ~ pokemonTeam.value:', pokemonTeam.value)
+  await useAddPokemons([...pokemonTeam.value])
 }
 </script>
 
 <template>
   <DefaultLayout class="home">
-    <BarAction class="home__bar-action" />
+    <BarAction class="home__bar-action" @add-team="submitTeam" />
     <!-- <Suspense> -->
     <GalleryPokemons
       class="home__gallery"

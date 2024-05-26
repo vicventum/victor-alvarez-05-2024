@@ -17,7 +17,6 @@ const emit = defineEmits<Emits>()
 const selectedPokemons = ref(new Set<string>([]))
 
 function addPokemon(id: string) {
-  console.log('🟠 ~ addPokemon ~ id:', id, selectedPokemons)
   const isPokemonAdded = selectedPokemons.value.has(id)
   if (isPokemonAdded) {
     selectedPokemons.value.delete(id)

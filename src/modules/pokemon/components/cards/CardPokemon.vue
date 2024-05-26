@@ -76,6 +76,7 @@ function selectPokemon(id: string) {
     max-width: 140px;
 
     transform: translateX(-50%) translateY(-50%);
+    filter: drop-shadow(0px 4px 4px var(--light-text));
   }
 
   &__content {

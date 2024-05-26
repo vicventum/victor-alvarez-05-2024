@@ -9,4 +9,6 @@ type GetAll = (queries: PokemonListQuery) => Promise<PokemonListResponse>
 
 type Get = (id: string) => Promise<PokemonDetailResponse>
 
-export type { PokemonListQuery, GetAll, Get }
+type Add = (payload: { pokemonTeam: string[] }) => Promise<void>
+
+export type { PokemonListQuery, GetAll, Get, Add }

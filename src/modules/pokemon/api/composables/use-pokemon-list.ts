@@ -3,7 +3,6 @@ import { storeToRefs } from 'pinia'
 
 import type { Get, GetAll, PokemonListQuery } from '@/modules/pokemon/types/PokemonProvider'
 import type { PokemonListResponse } from '@/modules/pokemon/types/PokemonList.response'
-import type { GetPokemonList } from '@/modules/pokemon/types/GetPokemonList'
 import type { PokemonList } from '@/modules/pokemon/types/PokemonList'
 
 import { getPokemonList } from '@/modules/pokemon/api/services/pokemon-service'
@@ -23,10 +22,6 @@ const usePokemonList = async () => {
       getPokemonList(provider, {
         page: currentPage.value
       })
-    // {
-    //   watch: [currentPage, dataFilter],
-    //   lazy: true
-    // }
   )
 
   watch(
