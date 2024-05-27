@@ -81,8 +81,10 @@ const buttonText = computed(() => {
   }
 
   &:hover:not(.pokemon--bordered-added, .pokemon--blocked) {
-    @extend .pokemon--bordered-selected;
-    // transform: scale(1.01);
+    @media (min-width: 560px) {
+      // @extend .pokemon--bordered-selected;
+      filter: drop-shadow(0px 0px 1px var(--primary));
+    }
   }
 
   &__img {

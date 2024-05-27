@@ -1,10 +1,11 @@
 import { watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { Get, GetAll, PokemonListQuery } from '@/modules/pokemon/types/PokemonProvider'
+import type { GetAll } from '@/modules/pokemon/types/PokemonProvider'
 import type { PokemonListResponse } from '@/modules/pokemon/types/PokemonList.response'
 import type { PokemonList } from '@/modules/pokemon/types/PokemonList'
 
+import { LIMIT_PAGE } from '@/modules/core/constants'
 import { getPokemonList } from '@/modules/pokemon/api/services/pokemon-service'
 import { getAll as axiosGetAll } from '@/modules/pokemon/api/providers/pokemon-axios-provider'
 import { usePokemonStore } from '@/modules/pokemon/stores/pokemon.store'
@@ -17,12 +18,16 @@ const usePokemonList = async () => {
 
   const provider: GetAll = axiosGetAll
 
-  const { data, isLoading, isError, refetch } = await useFetch<PokemonListResponse>(
-    () =>
-      getPokemonList(provider, {
-        page: currentPage.value
-      })
-  )
+  const { data, isLoading, isError, refetch } = await useFetch<PokemonListResponse>(() => {
+    // TODO: Evaluar una mejor manera de hacerlo
+    const isNotRepeatedRequest =
+      currentPage.value * LIMIT_PAGE !== pokemonList.value.length + LIMIT_PAGE
+
+    if (isNotRepeatedRequest) return null
+    return getPokemonList(provider, {
+      page: currentPage.value
+    })
+  })
 
   watch(
     currentPage,

@@ -8,37 +8,33 @@ import type {
   GetTeam,
   PokemonTeam
 } from '@/modules/pokemon/types/PokemonProvider'
+import { BASE_URL_DB, BASE_URL_POKEMON, LIMIT_PAGE } from '@/modules/core/constants'
 import { axiosClient } from '@/modules/pokemon/api/clients/axios-api'
 
 export const getAll: GetAll = async (queries: PokemonListQuery) => {
   const { page } = queries
-  const LIMIT_PAGE = 25
   const OFFSET = LIMIT_PAGE * (page - 1)
-  const BASE_URL = import.meta.env.VITE_API_POKEMON_URL
 
-  const resp = await axiosClient(`${BASE_URL}/pokemon/?offset=${OFFSET}&limit=${LIMIT_PAGE}`)
+  const resp = await axiosClient(`${BASE_URL_POKEMON}/pokemon/?offset=${OFFSET}&limit=${LIMIT_PAGE}`)
   const data: PokemonListResponse = await resp.data
 
   return data
 }
 
 export const get: Get = async (id: string) => {
-  const BASE_URL = import.meta.env.VITE_API_POKEMON_URL
-  const resp = await axiosClient(`${BASE_URL}/pokemon/${id}`)
+  const resp = await axiosClient(`${BASE_URL_POKEMON}/pokemon/${id}`)
   const data: PokemonDetailResponse = resp.data
   return data
 }
 
 export const put: Put = async (payload: { team: string[] }) => {
-  const BASE_URL = import.meta.env.VITE_API_DB_URL
 
-  await axiosClient.put(`${BASE_URL}/pokemon/1`, payload)
+  await axiosClient.put(`${BASE_URL_DB}/pokemon/1`, payload)
 }
 
 export const getTeam: GetTeam = async () => {
-  const BASE_URL = import.meta.env.VITE_API_DB_URL
 
-  const resp = await axiosClient.get(`${BASE_URL}/pokemon/1`)
+  const resp = await axiosClient.get(`${BASE_URL_DB}/pokemon/1`)
   const data: PokemonTeam = await resp.data
 
   return data
