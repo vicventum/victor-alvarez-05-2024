@@ -66,11 +66,16 @@ function clickDelete({ id, name }: { id: string; name: string }) {
 <style lang="scss" scoped>
 .card {
   display: grid;
-  grid-template-columns: 7rem 1fr auto;
+  grid-template-columns: 7rem 1fr;
+  grid-template-rows: 1fr 1fr;
+  max-height: 240px;
   // align-items: center;
   gap: 1rem;
 
-  height: 150px;
+  @media (min-width: 560px) {
+    max-height: 150px;
+    grid-template-columns: 7rem 1fr auto;
+  }
 
   &__image {
     width: 100%;
@@ -92,6 +97,7 @@ function clickDelete({ id, name }: { id: string; name: string }) {
 
   &__types-title {
     color: var(--light-text);
+    margin-bottom: .3rem;
   }
   &__types-tag {
     margin-right: 0.5rem;
@@ -99,8 +105,15 @@ function clickDelete({ id, name }: { id: string; name: string }) {
 
   &__actions {
     align-self: center;
+    grid-column: 1 / -1;
+
     display: flex;
+    justify-content: center;
     gap: 0.5rem;
+
+    @media (min-width: 560px) {
+      grid-column: auto;
+    }
   }
 }
 </style>

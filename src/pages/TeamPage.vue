@@ -46,5 +46,8 @@ function playSound(audioRef: Ref) {
 <style lang="scss" scoped>
 .card-team {
   margin-bottom: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 800px;
 }
 </style>

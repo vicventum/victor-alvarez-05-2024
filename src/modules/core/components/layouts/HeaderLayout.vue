@@ -42,7 +42,7 @@ import BaseCard from '@/modules/core/components/base/BaseCard.vue'
 
   &__links {
     display: flex;
-    gap: 3rem;
+    gap: 2rem;
   }
   &__link {
     color: var(--light-text);

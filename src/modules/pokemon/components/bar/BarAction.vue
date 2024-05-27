@@ -28,7 +28,7 @@ function addTeam() {
       <div class="bar__content">
         <img class="bar__icon" src="@/assets/img/pokeball.svg" alt="Pokeball icon" />
         <h2 class="bar__team-title">My team:</h2>
-        <span class="bar__team-number">{{ totalTeam }} / {{maxTeam}} pokemons</span>
+        <span class="bar__team-number">{{ totalTeam }} / {{ maxTeam }} pokemons</span>
       </div>
 
       <div class="bar__actions">
@@ -50,8 +50,14 @@ function addTeam() {
 
   &__inner {
     display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     justify-content: space-between;
     align-items: center;
+
+    @media (min-width: 560px) {
+      flex-direction: row;
+    }
   }
   &__icon {
     width: 2.5rem;
