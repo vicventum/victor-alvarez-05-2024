@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import BaseButton from '@/modules/core/components/base/BaseButton.vue'
 import BaseCard from '@/modules/core/components/base/BaseCard.vue'
 import BaseTag from '@/modules/core/components/base/BaseTag.vue'
@@ -13,6 +13,7 @@ type Props = {
   cries: { latest: string; legacy: string }
 }
 type Emits = {
+  'click-sound': [Ref]
   'click-delete': [{ id: string; name: string }]
 }
 const props = defineProps<Props>()
@@ -20,8 +21,8 @@ const emit = defineEmits<Emits>()
 
 const audioRef = ref()
 
-function playSound() {
-  if (audioRef.value) audioRef.value.play()
+function clickSound() {
+  emit('click-sound', audioRef)
 }
 function clickDelete({ id, name }: { id: string; name: string }) {
   emit('click-delete', { id, name })
@@ -49,7 +50,7 @@ function clickDelete({ id, name }: { id: string; name: string }) {
 
     <div class="card__actions">
       <audio ref="audioRef" :src="cries.latest" />
-      <BaseButton class="card__sound" @click="playSound">Sound</BaseButton>
+      <BaseButton class="card__sound" @click="clickSound">Sound</BaseButton>
       <BaseButton
         class="card__sound"
         background="hsla(2, 100%, 64%, 0.09)"

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
+
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import CardTeam from '@/modules/pokemon/components/cards-team/CardTeam.vue'
 
@@ -17,6 +19,10 @@ async function deletePokemon({ id, name }: { id: string; name: string }) {
   // FIXME: Refactorizar luego
   setTimeout(() => refetch(), 700)
 }
+
+function playSound(audioRef: Ref) {
+  if (audioRef.value) audioRef.value.play()
+}
 </script>
 
 <template>
@@ -31,6 +37,7 @@ async function deletePokemon({ id, name }: { id: string; name: string }) {
       :types="pokemon.types"
       :stats="pokemon.stats"
       :cries="pokemon.cries"
+      @click-sound="playSound"
       @click-delete="deletePokemon"
     />
   </DefaultLayout>
