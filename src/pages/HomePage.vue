@@ -17,7 +17,7 @@ function nextPage(page: number) {
   getPage(page)
 }
 
-const selectedTeam = ref<string[]>(pokemonTeam.value)
+const selectedTeam = ref<string[]>([])
 function addPokemons(selectedPokemons: string[]) {
   selectedTeam.value = selectedPokemons
 }
@@ -54,6 +54,7 @@ watch(
     <BarAction
       class="home__bar-action"
       :total-team="totalPokemonTeam"
+      :total-selected="selectedTeam.length"
       :max-team="MAX_TEAM"
       :is-button-disabled="isButtonBarDisabled"
       @add-team="submitTeam"

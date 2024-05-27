@@ -4,6 +4,7 @@ import BaseButton from '@/modules/core/components/base/BaseButton.vue'
 
 type Props = {
   totalTeam?: number
+  totalSelected?: number
   isButtonDisabled?: boolean
   maxTeam?: number
 }
@@ -12,6 +13,7 @@ type Emits = {
 }
 const props = withDefaults(defineProps<Props>(), {
   totalTeam: 0,
+  totalSelected: 0,
   isButtonDisabled: false,
   maxTeam: Infinity
 })
@@ -33,7 +35,7 @@ function addTeam() {
 
       <div class="bar__actions">
         <BaseButton class="bar__add-btn" :disabled="isButtonDisabled" @click="addTeam">
-          Add to my team
+          Add to my team ({{ totalSelected }})
         </BaseButton>
       </div>
     </BaseCard>
