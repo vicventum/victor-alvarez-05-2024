@@ -2,7 +2,7 @@ import type { PokemonListResponse } from '@/modules/pokemon/types/PokemonList.re
 import type { PokemonDetailResponse } from '@/modules/pokemon/types/PokemonDetail.response'
 import type { Get, GetAll, PokemonListQuery } from '@/modules/pokemon/types/PokemonProvider'
 import type {
-  AddPokemonTeam,
+  PutPokemonTeam,
   GetPokemonDetail,
   GetPokemonList,
   GetPokemonTeam
@@ -28,10 +28,10 @@ const getPokemonDetail: GetPokemonDetail = async (provider, { id }) => {
   return pokemonDetailResponse
 }
 
-const addPokemonTeam: AddPokemonTeam = async (provider, payload) => {
-  const addPokemonTeamResponse = await provider(payload)
+const putPokemonTeam: PutPokemonTeam = async (provider, payload) => {
+  const putPokemonTeamResponse = await provider(payload)
 
-  return addPokemonTeamResponse
+  return putPokemonTeamResponse
 }
 
 const getPokemonTeam: GetPokemonTeam = async (provider) => {
@@ -43,4 +43,4 @@ const getPokemonTeam: GetPokemonTeam = async (provider) => {
   return pokemonTeamResponse
 }
 
-export { getPokemonList, getPokemonDetail, addPokemonTeam, getPokemonTeam }
+export { getPokemonList, getPokemonDetail, putPokemonTeam, getPokemonTeam }

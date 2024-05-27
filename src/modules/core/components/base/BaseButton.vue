@@ -1,10 +1,12 @@
 <script setup lang="ts">
 type Props = {
   background?: string
+  color?: string
   disabled?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   background: 'var(--primary)',
+  color: 'var(--on-primary)',
   disabled: false
 })
 </script>
@@ -18,9 +20,10 @@ const props = withDefaults(defineProps<Props>(), {
 <style lang="scss" scoped>
 .btn {
   padding: 0.5rem 1rem;
-  color: var(--on-primary);
+  color: v-bind(color);
   background-color: v-bind(background);
   border-radius: var(--border);
+  font-weight: 500;
 
   transition: background-color, filter, 0.15s;
 

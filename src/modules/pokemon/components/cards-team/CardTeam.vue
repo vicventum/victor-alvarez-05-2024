@@ -12,12 +12,19 @@ type Props = {
   stats: object[]
   cries: { latest: string; legacy: string }
 }
+type Emits = {
+  'click-delete': [{ id: string; name: string }]
+}
 const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
 
 const audioRef = ref()
 
 function playSound() {
   if (audioRef.value) audioRef.value.play()
+}
+function clickDelete({ id, name }: { id: string; name: string }) {
+  emit('click-delete', { id, name })
 }
 </script>
 
@@ -41,8 +48,16 @@ function playSound() {
     </div>
 
     <div class="card__actions">
-      <BaseButton class="card__sound" @click="playSound">Sound</BaseButton>
       <audio ref="audioRef" :src="cries.latest" />
+      <BaseButton class="card__sound" @click="playSound">Sound</BaseButton>
+      <BaseButton
+        class="card__sound"
+        background="hsla(2, 100%, 64%, 0.09)"
+        color="var(--light-text)"
+        @click="clickDelete({ id, name })"
+      >
+        Delete
+      </BaseButton>
     </div>
   </BaseCard>
 </template>
@@ -81,8 +96,10 @@ function playSound() {
     margin-right: 0.5rem;
   }
 
-	&__actions {
-		align-self: center;
-	}
+  &__actions {
+    align-self: center;
+    display: flex;
+    gap: 0.5rem;
+  }
 }
 </style>

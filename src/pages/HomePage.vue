@@ -7,7 +7,7 @@ import GalleryPokemons from '@/modules/pokemon/components/gallery/GalleryPokemon
 
 import { MAX_POKEMONS, MAX_TEAM } from '@/modules/core/constants'
 import { usePokemonList } from '@/modules/pokemon/api/composables/use-pokemon-list'
-import { useAddPokemons } from '@/modules/pokemon/api/composables/use-add-pokemons'
+import { usePutPokemons } from '@/modules/pokemon/api/composables/use-put-pokemons'
 import { useGetPokemonTeam } from '@/modules/pokemon/api/composables/use-get-pokemon-team'
 
 const { pokemonList, isLoading, isFinalPage, currentPage, getPage } = await usePokemonList()
@@ -23,8 +23,8 @@ function addPokemons(selectedPokemons: string[]) {
 }
 
 async function submitTeam() {
-  const arr = [...new Set([...selectedTeam.value, ...pokemonTeam.value])]
-  await useAddPokemons(arr)
+  const teamUpdated = [...new Set([...selectedTeam.value, ...pokemonTeam.value])]
+  await usePutPokemons(teamUpdated)
   // FIXME: Refactorizar luego
   setTimeout(() => refetch(), 700)
 }
