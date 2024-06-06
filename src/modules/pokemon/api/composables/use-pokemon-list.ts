@@ -1,4 +1,4 @@
-import { watch } from 'vue'
+import { computed, onUnmounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import type { GetAll } from '@/modules/pokemon/types/PokemonProvider'
@@ -16,21 +16,20 @@ const usePokemonList = async () => {
   const store = usePokemonStore()
   const { pokemonList, currentPage, isFinalPage } = storeToRefs(store)
 
+  const isValidRequest = computed(
+    () => pokemonList.value.length + LIMIT_PAGE === currentPage.value * LIMIT_PAGE 
+  )
   const provider: GetAll = axiosGetAll
 
   const { data, isLoading, isError, refetch } = await useFetch<PokemonListResponse>(() => {
-    // TODO: Evaluar una mejor manera de hacerlo
-    const isNotRepeatedRequest =
-      currentPage.value * LIMIT_PAGE !== pokemonList.value.length + LIMIT_PAGE
-
-    if (isNotRepeatedRequest) return null
+    if (!isValidRequest.value) return null
     return getPokemonList(provider, {
       page: currentPage.value
     })
   })
 
-  watch(
-    currentPage,
+  const unwatchCurrentPage = watch(
+    () => currentPage.value,
     async () => {
       await refetch()
     },
@@ -38,7 +37,7 @@ const usePokemonList = async () => {
   )
 
   // ? Insertando la data (cuando ya se obtenga) en el store
-  watch(
+  const unwatchData = watch(
     () => data.value,
     (newPokemonListResponse: PokemonListResponse | undefined) => {
       if (!newPokemonListResponse) return null
@@ -51,6 +50,14 @@ const usePokemonList = async () => {
     },
     { immediate: true }
   )
+
+  function cleanEffects() {
+    unwatchCurrentPage()
+    unwatchData()
+  }
+  // onUnmounted(() => {
+  //   cleanEffects()
+  // })
 
   return {
     // --- Properties
@@ -68,7 +75,8 @@ const usePokemonList = async () => {
     // --- Methods
     getPage(page: number) {
       store.setPage(page)
-    }
+    },
+    cleanEffects
   }
 }
 

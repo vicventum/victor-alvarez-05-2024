@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onUnmounted, ref, watch } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import BaseButton from '@/modules/core/components/base/BaseButton.vue'
 import BarAction from '@/modules/pokemon/components/bar/BarAction.vue'
@@ -10,7 +10,8 @@ import { usePokemonList } from '@/modules/pokemon/api/composables/use-pokemon-li
 import { usePutPokemons } from '@/modules/pokemon/api/composables/use-put-pokemons'
 import { useGetPokemonTeam } from '@/modules/pokemon/api/composables/use-get-pokemon-team'
 
-const { pokemonList, isLoading, isFinalPage, currentPage, getPage } = await usePokemonList()
+const { pokemonList, isLoading, isFinalPage, currentPage, getPage, cleanEffects } =
+  await usePokemonList()
 const { pokemonTeam, totalPokemonTeam, refetch } = await useGetPokemonTeam()
 
 function nextPage(page: number) {
@@ -47,6 +48,8 @@ watch(
   },
   { immediate: true, deep: true }
 )
+
+onUnmounted(() => cleanEffects())
 </script>
 
 <template>

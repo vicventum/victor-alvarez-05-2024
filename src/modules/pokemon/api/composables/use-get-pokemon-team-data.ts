@@ -1,15 +1,15 @@
-import { computed, watch } from 'vue'
+import { watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import type { Get, PokemonTeam } from '@/modules/pokemon/types/PokemonProvider'
+import type { Get } from '@/modules/pokemon/types/PokemonProvider'
 
 import { getPokemonDetail } from '@/modules/pokemon/api/services/pokemon-service'
 import { get as axiosGet } from '@/modules/pokemon/api/providers/pokemon-axios-provider'
 import { usePokemonStore } from '@/modules/pokemon/stores/pokemon.store'
 import { useFetch } from '@/modules/core/api/composables/use-fetch'
-import type { PokemonDetailResponse } from '../../types/PokemonDetail.response'
-import type { PokemonDetail } from '../../types/PokemonDetail'
-import { utilFormatPokemonDetail } from '../../utils/util-format-pokemon-detail'
+import type { PokemonDetailResponse } from '@/modules/pokemon/types/PokemonDetail.response'
+import type { PokemonDetail } from '@/modules/pokemon/types/PokemonDetail'
+import { utilFormatPokemonDetail } from '@/modules/pokemon/utils/util-format-pokemon-detail'
 
 // const useGetPokemonTeamData = async (pokemonTeam: string[]) => {
 const useGetPokemonTeamData = async () => {
@@ -23,7 +23,7 @@ const useGetPokemonTeamData = async () => {
     return Promise.all(promises)
   })
 
-  watch(
+  const unwatchPokemonTeam = watch(
     pokemonTeam,
     async () => {
       await refetch()
@@ -32,7 +32,7 @@ const useGetPokemonTeamData = async () => {
   )
 
   // ? Insertando la data (cuando ya se obtenga) en el store
-  watch(
+  const unwatchData = watch(
     () => data.value,
     (newTeamData: PokemonDetailResponse[] | undefined) => {
       if (!newTeamData) return null
@@ -43,6 +43,11 @@ const useGetPokemonTeamData = async () => {
     },
     { immediate: true }
   )
+
+  function cleanEffects() {
+    unwatchPokemonTeam()
+    unwatchData()
+  }
 
   return {
     // --- Properties
@@ -55,7 +60,8 @@ const useGetPokemonTeamData = async () => {
     // totalPokemonTeam: computed(() => pokemonTeam.value?.length),
 
     // --- Methods
-    refetch
+    refetch,
+    cleanEffects
   }
 }
 

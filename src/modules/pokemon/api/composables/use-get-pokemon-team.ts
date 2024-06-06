@@ -14,19 +14,23 @@ const useGetPokemonTeam = async () => {
 
   const provider: GetTeam = axiosGetTeam
 
-  const { data, isLoading, isError, refetch } = await useFetch<PokemonTeam>(() =>
-    getPokemonTeam(provider)
-  )
+  const { data, isLoading, isError, refetch } = await useFetch<PokemonTeam>(() => {
+    return getPokemonTeam(provider)
+  })
 
   // ? Insertando la data (cuando ya se obtenga) en el store
-  watch(
+  const unwatchData = watch(
     () => data.value,
     (newData: PokemonTeam | undefined) => {
       if (!newData) return null
       store.setPokemonTeam(newData.team)
     },
-    { immediate: true, deep: true }
+    { immediate: false, deep: true }
   )
+
+  function cleanEffects() {
+    unwatchData()
+  }
 
   return {
     // --- Properties
@@ -39,7 +43,8 @@ const useGetPokemonTeam = async () => {
     totalPokemonTeam: computed(() => pokemonTeam.value?.length),
 
     // --- Methods
-    refetch
+    refetch,
+    cleanEffects
   }
 }
 
